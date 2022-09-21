@@ -68,7 +68,8 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.get(`http://localhost:8081/nft/createnft/${start}/${end}`).then(
+    console.table(start, end);
+    axios.get(`http://localhost:8081/nft/createnft`).then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.NFTdata);
