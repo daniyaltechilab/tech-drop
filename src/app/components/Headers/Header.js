@@ -30,6 +30,7 @@ import {
 import Logo from "../../assets/img/logo.png";
 import WhiteLogo from "../../assets/img/white-logo.png";
 import RightLogo from "../../assets/img/rightLogo.png";
+import Techi from "../../assets/img/techi.png";
 
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
@@ -138,7 +139,7 @@ function HeaderHome(props) {
             >
               <NavLogoLink onScrollChange={onScrollChange}>
                 {/* Robotdrop */}
-                {onScrollChange ? (
+                {/* {onScrollChange ? (
                   <img
                     src={Logo}
                     style={{
@@ -154,7 +155,8 @@ function HeaderHome(props) {
                       marginTop: "-10px",
                     }}
                   />
-                )}
+                )} */}
+                <img src={Techi} alt="techilab" style={{ width: "50px" }} />
               </NavLogoLink>
             </Link>
           </div>

@@ -6,6 +6,10 @@ export const FooterWrapper = styled.footer`
   color: white;
   display: flex;
   align-items: center;
+  /* position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0; */
 `;
 
 export const LeftFooterSection = styled.div`
