@@ -28,7 +28,7 @@ function LoginScreen(props) {
     setIsLoading(true);
     event.preventDefault();
     axios
-      .post("https://r-robot-drop.herokuapp.com/user/auth/adminlogin", {
+      .post("http://localhost:8081/user/auth/adminlogin", {
         username: userName.toLowerCase(),
         password: password,
       })

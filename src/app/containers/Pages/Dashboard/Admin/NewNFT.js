@@ -145,7 +145,7 @@ function NewNFT(props) {
   let [executiveProducer, setExecutiveProducer] = useState("");
 
   let getProfileData = () => {
-    axios.get("https://r-robot-drop.herokuapp.com/profile/createprofile").then(
+    axios.get("http://localhost:8081/profile/createprofile").then(
       (response) => {
         console.log("response", response);
         setImageArtistTypes(response.data.Imageartist);
@@ -178,7 +178,7 @@ function NewNFT(props) {
     );
   };
   let getCollections = () => {
-    axios.get("https://r-robot-drop.herokuapp.com/collection/collections").then(
+    axios.get("http://localhost:8081/collection/collections").then(
       (response) => {
         console.log("response", response);
         setCollectionTypes(response.data.Collectiondata);
@@ -469,58 +469,56 @@ function NewNFT(props) {
               nftdata: tokenList,
             };
             console.log("Data", Data);
-            axios
-              .post("https://r-robot-drop.herokuapp.com/nft/createnft", Data)
-              .then(
-                (response) => {
-                  console.log("response", response);
-                  let variant = "success";
-                  enqueueSnackbar("Nfts Created Successfully.", { variant });
-                  setTokenList([]);
-                  setIpfsHash("");
-                  setImage(r1);
-                  setName("");
-                  setDescription("");
-                  setRarity("");
-                  setTokenSupply(1);
-                  setImageArtist("");
-                  setAboutTheArt("");
-                  setWebsite("");
-                  setArtistImage(r1);
-                  setProducer("");
-                  setInspirationForThePiece("");
-                  setProducerImage(r1);
-                  setExecutiveProducer("");
-                  setExecutiveInspirationForThePiece("");
-                  setExecutiveProducerImage(r1);
-                  setFan("");
-                  setFanInspirationForThePiece("");
-                  setFanImage(r1);
-                  setOther("");
-                  setCollection("");
-                  setCollectionType("New");
-                  setImageArtistType("New");
-                  setProducerType("New");
-                  setExecutiveProducerType("New");
-                  setFanType("New");
-                  setSupplyType("Single");
-                  setCollectionId("");
-                  handleCloseBackdrop();
-                  setIsSaving(false);
-                },
-                (error) => {
-                  if (process.env.NODE_ENV === "development") {
-                    console.log(error);
-                    console.log(error.response);
-                  }
-
-                  let variant = "error";
-                  enqueueSnackbar("Unable to Create Nfts.", { variant });
-
-                  handleCloseBackdrop();
-                  setIsSaving(false);
+            axios.post("http://localhost:8081/nft/createnft", Data).then(
+              (response) => {
+                console.log("response", response);
+                let variant = "success";
+                enqueueSnackbar("Nfts Created Successfully.", { variant });
+                setTokenList([]);
+                setIpfsHash("");
+                setImage(r1);
+                setName("");
+                setDescription("");
+                setRarity("");
+                setTokenSupply(1);
+                setImageArtist("");
+                setAboutTheArt("");
+                setWebsite("");
+                setArtistImage(r1);
+                setProducer("");
+                setInspirationForThePiece("");
+                setProducerImage(r1);
+                setExecutiveProducer("");
+                setExecutiveInspirationForThePiece("");
+                setExecutiveProducerImage(r1);
+                setFan("");
+                setFanInspirationForThePiece("");
+                setFanImage(r1);
+                setOther("");
+                setCollection("");
+                setCollectionType("New");
+                setImageArtistType("New");
+                setProducerType("New");
+                setExecutiveProducerType("New");
+                setFanType("New");
+                setSupplyType("Single");
+                setCollectionId("");
+                handleCloseBackdrop();
+                setIsSaving(false);
+              },
+              (error) => {
+                if (process.env.NODE_ENV === "development") {
+                  console.log(error);
+                  console.log(error.response);
                 }
-              );
+
+                let variant = "error";
+                enqueueSnackbar("Unable to Create Nfts.", { variant });
+
+                handleCloseBackdrop();
+                setIsSaving(false);
+              }
+            );
           });
       }
     }
@@ -558,127 +556,117 @@ function NewNFT(props) {
     setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response of s3", response);
-          setImage(response.data.url);
-          setIsUploadingIPFS(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingIPFS(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response of s3", response);
+        setImage(response.data.url);
+        setIsUploadingIPFS(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploadingIPFS(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
 
   let onChangeSelfieHandler = (e) => {
     setIsUploadingImageArtist(true);
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setArtistImage(response.data.url);
-          setIsUploadingImageArtist(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingImageArtist(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setArtistImage(response.data.url);
+        setIsUploadingImageArtist(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploadingImageArtist(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
   let onChangeProducerHandler = (e) => {
     setIsUploadingProducer(true);
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setProducerImage(response.data.url);
-          setIsUploadingProducer(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingProducer(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setProducerImage(response.data.url);
+        setIsUploadingProducer(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploadingProducer(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
   let onChangeExecutiveProducerHandler = (e) => {
     setIsUploadingExecutiveProducer(true);
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setExecutiveProducerImage(response.data.url);
-          setIsUploadingExecutiveProducer(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingExecutiveProducer(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setExecutiveProducerImage(response.data.url);
+        setIsUploadingExecutiveProducer(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploadingExecutiveProducer(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
   let onChangeFanHandler = (e) => {
     setIsUploadingFan(true);
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setFanImage(response.data.url);
-          setIsUploadingFan(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingFan(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setFanImage(response.data.url);
+        setIsUploadingFan(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploadingFan(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
   return (
     <div className="card">

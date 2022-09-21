@@ -16,7 +16,6 @@ export const AuctionCardStyled = styled(Card)`
       : props.index === 0
       ? "linear-gradient(to bottom, #878787, #cacaca)"
       : "linear-gradient(to bottom, #884ed3, #101480 )"};
-  overflow-y: auto;
 
   margin-left: ${(props) => (props.index === 1 ? "20px" : "0")};
 

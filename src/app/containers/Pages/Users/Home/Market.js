@@ -197,7 +197,7 @@ function MarketPlace(props) {
                               >
                                 <strong>Cube Title: </strong>
                                 {/* {i.title} */}
-                                TechiLab Cube
+                                Tech drop Cube
                               </Typography>
                               <Typography
                                 variant="body2"
@@ -206,7 +206,7 @@ function MarketPlace(props) {
                               >
                                 <strong>Cube Description: </strong>
                                 {/* {i.description} */}
-                                TechiLab Cube Description
+                                Tech drop Description
                               </Typography>
 
                               <Typography

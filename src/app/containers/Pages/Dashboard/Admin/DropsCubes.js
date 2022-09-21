@@ -65,7 +65,7 @@ function DropCubes(props) {
     let DropId = {
       dropId: dropId,
     };
-    axios.post("https://r-robot-drop.herokuapp.com/drop/drops", DropId).then(
+    axios.post("http://localhost:8081/drop/drops", DropId).then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.Dropdata);

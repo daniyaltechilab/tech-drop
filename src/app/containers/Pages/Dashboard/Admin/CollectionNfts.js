@@ -65,7 +65,7 @@ function CollectionNfts(props) {
     //   collectionId: collectionId,
     // };
     // .post("http://localhost:8081/collection/collections", CollectioId)
-    axios.get("https://r-robot-drop.herokuapp.com/collection/collections").then(
+    axios.get("http://localhost:8081/collection/collections").then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.Collectiondata);

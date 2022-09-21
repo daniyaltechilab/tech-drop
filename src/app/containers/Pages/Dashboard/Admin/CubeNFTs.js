@@ -115,7 +115,7 @@ function CubeNFTs(props) {
       dropId: dropId !== "notdrop" ? dropId : null,
     };
     console.log("Data", Data);
-    axios.post("/token/SingleTokenId", Data).then(
+    axios.post("http://localhost:8081/token/SingleTokenId", Data).then(
       async (response) => {
         console.log("response", response);
         setTokenList(response.data.nftdata);
@@ -141,7 +141,7 @@ function CubeNFTs(props) {
         }
         axios
           .get(
-            `https://r-robot-drop.herokuapp.com/transaction/tokenTransaction/${response.data.tokensdata.tokenId}`
+            `http://localhost:8081/transaction/tokenTransaction/${response.data.tokensdata.tokenId}`
           )
           .then(
             (res) => {
@@ -172,10 +172,7 @@ function CubeNFTs(props) {
           tokenId: cubeId,
         };
         axios
-          .post(
-            `https://r-robot-drop.herokuapp.com/dropcubehistory/history`,
-            bidData
-          )
+          .post(`http://localhost:8081/dropcubehistory/history`, bidData)
           .then(
             (res) => {
               console.log("res", res);
@@ -270,32 +267,27 @@ function CubeNFTs(props) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
         "Authorization"
       )}`;
-      axios
-        .post(
-          `https://r-robot-drop.herokuapp.com/adminclaimfunds/claimfunds`,
-          Data
-        )
-        .then(
-          (res) => {
-            console.log("res", res);
-            setIsClaiming(false);
-            handleCloseBackdrop();
-            getCubeNFTs();
-            getClaimFunds();
-            let variant = "success";
-            enqueueSnackbar("Funds transferred Successfully.", { variant });
-          },
-          (error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-            }
-            setIsClaiming(false);
-            handleCloseBackdrop();
-            let variant = "error";
-            enqueueSnackbar("Unable to transfer Funds.", { variant });
+      axios.post(`http://localhost:8081/adminclaimfunds/claimfunds`, Data).then(
+        (res) => {
+          console.log("res", res);
+          setIsClaiming(false);
+          handleCloseBackdrop();
+          getCubeNFTs();
+          getClaimFunds();
+          let variant = "success";
+          enqueueSnackbar("Funds transferred Successfully.", { variant });
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
           }
-        );
+          setIsClaiming(false);
+          handleCloseBackdrop();
+          let variant = "error";
+          enqueueSnackbar("Unable to transfer Funds.", { variant });
+        }
+      );
     }
   };
   let getClaimFunds = async () => {
@@ -309,10 +301,7 @@ function CubeNFTs(props) {
     };
 
     axios
-      .post(
-        `https://r-robot-drop.herokuapp.com/adminclaimfunds/getclaimfunds`,
-        Data
-      )
+      .post(`http://localhost:8081/adminclaimfunds/getclaimfunds`, Data)
       .then(
         (res) => {
           console.log("res", res);

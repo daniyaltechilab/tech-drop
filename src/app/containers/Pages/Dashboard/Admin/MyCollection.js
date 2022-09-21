@@ -65,9 +65,7 @@ function MyCollection(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(
-        `https://r-robot-drop.herokuapp.com/collection/collections/${start}/${end}`
-      )
+      .get(`http://localhost:8081/collection/collections/${start}/${end}`)
       .then((response) => {
         console.log("response.data", response.data);
         setCollections(response.data.Collectiondata);
@@ -106,10 +104,7 @@ function MyCollection(props) {
       collectiontitle: collection,
     };
     axios
-      .post(
-        `https://r-robot-drop.herokuapp.com/collection/createcollection`,
-        CollectionData
-      )
+      .post(`http://localhost:8081/collection/createcollection`, CollectionData)
       .then((response) => {
         setIsCreating(false);
         console.log("response.data", response);

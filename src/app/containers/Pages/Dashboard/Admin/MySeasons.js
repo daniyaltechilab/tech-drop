@@ -65,39 +65,37 @@ function MySeasons(props) {
 
   let getMySeasons = (start, end) => {
     handleShowBackdrop();
-    axios
-      .get(`https://r-robot-drop.herokuapp.com/season/seasons/${start}/${end}`)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setTokenList(response.data.Seasondata);
-          setTotalseasons(response.data.Seasonscount);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (
-            error !== undefined &&
-            error.response != undefined &&
-            error.response.data !== undefined
-          ) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              Cookies.remove("Authorization");
-              localStorage.removeItem("Address");
-              window.location.reload();
-            }
-          } else {
-            console.log("no response");
-            //   window.location.reload();
-          }
-          handleCloseBackdrop();
+    axios.get(`http://localhost:8081/season/seasons/${start}/${end}`).then(
+      (response) => {
+        console.log("response", response);
+        setTokenList(response.data.Seasondata);
+        setTotalseasons(response.data.Seasonscount);
+        handleCloseBackdrop();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        if (
+          error !== undefined &&
+          error.response != undefined &&
+          error.response.data !== undefined
+        ) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload();
+          }
+        } else {
+          console.log("no response");
+          //   window.location.reload();
+        }
+        handleCloseBackdrop();
+      }
+    );
   };
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);

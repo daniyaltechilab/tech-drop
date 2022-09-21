@@ -68,40 +68,38 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios
-      .get(`https://r-robot-drop.herokuapp.com/nft/createnft/${start}/${end}`)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setTokenList(response.data.NFTdata);
-          setTotalNfts(response.data.Nftcount);
+    axios.get(`http://localhost:8081/nft/createnft/${start}/${end}`).then(
+      (response) => {
+        console.log("response", response);
+        setTokenList(response.data.NFTdata);
+        setTotalNfts(response.data.Nftcount);
 
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (
-            error !== undefined &&
-            error.response != undefined &&
-            error.response.data !== undefined
-          ) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              Cookies.remove("Authorization");
-              localStorage.removeItem("Address");
-              window.location.reload();
-            }
-          } else {
-            console.log("no response");
-            //   window.location.reload();
-          }
-          handleCloseBackdrop();
+        handleCloseBackdrop();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        if (
+          error !== undefined &&
+          error.response != undefined &&
+          error.response.data !== undefined
+        ) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload();
+          }
+        } else {
+          console.log("no response");
+          //   window.location.reload();
+        }
+        handleCloseBackdrop();
+      }
+    );
   };
 
   useEffect(() => {

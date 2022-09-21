@@ -105,40 +105,38 @@ function NewDrop(props) {
   };
 
   let getMyCubes = () => {
-    axios
-      .get("https://r-robot-drop.herokuapp.com/token/TokenIdsnotonauction")
-      .then(
-        (response) => {
-          console.log(
-            "TokenIdsnotonauction response",
-            response?.data?.tokensdata
-          );
-          setInputList(response.data.tokensdata);
-          setImageData(response.data.nftsdata);
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (
-            error !== undefined &&
-            error.response != undefined &&
-            error.response.data !== undefined
-          ) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              Cookies.remove("Authorization");
-              localStorage.removeItem("Address");
-              window.location.reload();
-            }
-          } else {
-            console.log("no response");
-            //   window.location.reload();
-          }
+    axios.get("http://localhost:8081/token/TokenIdsnotonauction").then(
+      (response) => {
+        console.log(
+          "TokenIdsnotonauction response",
+          response?.data?.tokensdata
+        );
+        setInputList(response.data.tokensdata);
+        setImageData(response.data.nftsdata);
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        if (
+          error !== undefined &&
+          error.response != undefined &&
+          error.response.data !== undefined
+        ) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload();
+          }
+        } else {
+          console.log("no response");
+          //   window.location.reload();
+        }
+      }
+    );
   };
 
   useEffect(() => {
@@ -324,40 +322,38 @@ function NewDrop(props) {
           image: image,
         };
         console.log("cubeData", DropData);
-        axios
-          .post("https://r-robot-drop.herokuapp.com/drop/createdrop", DropData)
-          .then(
-            (response) => {
-              console.log("response", response);
-              setIsSaving(false);
-              setStartTime(new Date());
-              setEndTime(new Date());
-              setName("");
-              setMinimumBid();
-              setDescription("");
-              setTypes([]);
-              setTypesImages([]);
-              setType("");
-              setMinimumBid(0);
-              setBidDelta(0);
-              setImage(r1);
-              handleCloseBackdrop();
+        axios.post("http://localhost:8081/drop/createdrop", DropData).then(
+          (response) => {
+            console.log("response", response);
+            setIsSaving(false);
+            setStartTime(new Date());
+            setEndTime(new Date());
+            setName("");
+            setMinimumBid();
+            setDescription("");
+            setTypes([]);
+            setTypesImages([]);
+            setType("");
+            setMinimumBid(0);
+            setBidDelta(0);
+            setImage(r1);
+            handleCloseBackdrop();
 
-              let variant = "success";
-              enqueueSnackbar("Drop Created Successfully.", { variant });
-            },
-            (error) => {
-              if (process.env.NODE_ENV === "development") {
-                console.log(error);
-                console.log(error.response);
-              }
-              handleCloseBackdrop();
-
-              setIsSaving(false);
-              let variant = "error";
-              enqueueSnackbar("Unable to Create Drop.", { variant });
+            let variant = "success";
+            enqueueSnackbar("Drop Created Successfully.", { variant });
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
             }
-          );
+            handleCloseBackdrop();
+
+            setIsSaving(false);
+            let variant = "error";
+            enqueueSnackbar("Unable to Create Drop.", { variant });
+          }
+        );
         // })
       }
     }
@@ -369,26 +365,24 @@ function NewDrop(props) {
     let fileData = new FormData();
     fileData.append("image", imageNFT);
     console.log("File data ha bhai ya: ", fileData);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setImage(response.data.url);
-          setIsUploading(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log("s3 error", error);
-            console.log(error.response);
-          }
-          setIsUploading(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setImage(response.data.url);
+        setIsUploading(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log("s3 error", error);
+          console.log(error.response);
         }
-      );
+        setIsUploading(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
 
   return (

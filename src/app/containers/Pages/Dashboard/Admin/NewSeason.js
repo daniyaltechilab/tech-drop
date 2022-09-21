@@ -62,7 +62,7 @@ function NewSeason(props) {
   let [type, setType] = useState();
   let [types, setTypes] = useState([]);
   let getMyDrops = () => {
-    axios.get("https://r-robot-drop.herokuapp.com/drop/drops").then(
+    axios.get("http://localhost:8081/drop/drops").then(
       (response) => {
         console.log("response", response);
         setInputList(response.data.Dropdata);
@@ -149,32 +149,27 @@ function NewSeason(props) {
       dropId: dropList,
     };
     console.log("cubeData", SeasonData);
-    axios
-      .post(
-        "https://r-robot-drop.herokuapp.com/season/createseason",
-        SeasonData
-      )
-      .then(
-        (response) => {
-          console.log("response", response);
-          setIsSaving(false);
-          setName("");
-          setDescription("");
-          setImage(r1);
-          setTypes([]);
-          let variant = "success";
-          enqueueSnackbar("New Season Created Successfully.", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsSaving(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Create New Season.", { variant });
+    axios.post("http://localhost:8081/season/createseason", SeasonData).then(
+      (response) => {
+        console.log("response", response);
+        setIsSaving(false);
+        setName("");
+        setDescription("");
+        setImage(r1);
+        setTypes([]);
+        let variant = "success";
+        enqueueSnackbar("New Season Created Successfully.", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsSaving(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Create New Season.", { variant });
+      }
+    );
   };
 
   let onChangeFile = (e) => {
@@ -182,26 +177,24 @@ function NewSeason(props) {
     let imageNFT = e.target.files[0];
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setImage(response.data.url);
-          setIsUploading(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploading(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setImage(response.data.url);
+        setIsUploading(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploading(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
 
   return (

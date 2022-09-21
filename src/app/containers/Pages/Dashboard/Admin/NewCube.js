@@ -113,7 +113,7 @@ function NewCube(props) {
     setOpen(true);
   };
   let getProfileData = () => {
-    axios.get("https://r-robot-drop.herokuapp.com/profile/createprofile").then(
+    axios.get("http://localhost:8081/profile/createprofile").then(
       (response) => {
         console.log("response", response);
         setArtistTypes(response.data.Musicartist);
@@ -145,47 +145,43 @@ function NewCube(props) {
   let uploadMusicOwnerHandler = (e, index) => {
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setMusicOwner(response.data.url);
-          let variant = "success";
-          enqueueSnackbar("Audio Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Audio to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setMusicOwner(response.data.url);
+        let variant = "success";
+        enqueueSnackbar("Audio Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Audio to S3 .", { variant });
+      }
+    );
   };
   let uploadMusicNonOwnerHandler = (e, index) => {
     console.log(e);
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setMusicNonOwner(response.data.url);
-          let variant = "success";
-          enqueueSnackbar("Audio Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Audio to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setMusicNonOwner(response.data.url);
+        let variant = "success";
+        enqueueSnackbar("Audio Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Audio to S3 .", { variant });
+      }
+    );
   };
   useEffect(() => {
     getMyNFTs();
@@ -209,7 +205,7 @@ function NewCube(props) {
     });
   }, []);
   let getMyNFTs = () => {
-    axios.get("https://r-robot-drop.herokuapp.com/nft/createnft").then(
+    axios.get("http://localhost:8081/nft/createnft").then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.NFTdata);
@@ -396,10 +392,7 @@ function NewCube(props) {
                 };
                 console.log("cubeData", cubeData);
                 axios
-                  .post(
-                    "https://r-robot-drop.herokuapp.com/token/TokenIds",
-                    cubeData
-                  )
+                  .post("http://localhost:8081/token/TokenIds", cubeData)
                   .then(
                     (response) => {
                       console.log("response", response);
@@ -437,7 +430,7 @@ function NewCube(props) {
                 };
                 axios
                   .post(
-                    "https://r-robot-drop.herokuapp.com/transaction/tokenTransaction ",
+                    "http://localhost:8081/transaction/tokenTransaction ",
                     TrasactionData
                   )
                   .then(
@@ -485,26 +478,24 @@ function NewCube(props) {
     setIsUploadingArtist(true);
     let fileData = new FormData();
     fileData.append("image", e.target.files[0]);
-    axios
-      .post("https://r-robot-drop.herokuapp.com/upload/uploadtos3", fileData)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setArtistImage(response.data.url);
-          setIsUploadingArtist(false);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingArtist(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+    axios.post("http://localhost:8081/upload/uploadtos3", fileData).then(
+      (response) => {
+        console.log("response", response);
+        setArtistImage(response.data.url);
+        setIsUploadingArtist(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        setIsUploadingArtist(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+      }
+    );
   };
 
   return (

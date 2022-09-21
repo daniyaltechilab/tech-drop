@@ -64,23 +64,21 @@ function SeasonDrops(props) {
     let SeasonId = {
       seasonId: seasonId,
     };
-    axios
-      .post("https://r-robot-drop.herokuapp.com/season/seasons", SeasonId)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setTokenList(response.data.Dropdata);
-          // setImageData(response.data.nftsdata);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
+    axios.post("http://localhost:8081/season/seasons", SeasonId).then(
+      (response) => {
+        console.log("response", response);
+        setTokenList(response.data.Dropdata);
+        // setImageData(response.data.nftsdata);
+        handleCloseBackdrop();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        handleCloseBackdrop();
+      }
+    );
   };
 
   useEffect(() => {
